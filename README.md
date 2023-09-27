@@ -13,3 +13,10 @@ Includes color as `bool`, `true` is black, `false` is white.
 
 ### Function `new_game()`
 Returns a vector of all pieces
+
+### Function `make_move(String, [i8;2], Vec<Piece>) -> Vec<Piece>`
+Makes a move and remove the captured opponent if any.
+Returns the updated vector.
+
+### Function `get_moves()`
+Not finished
