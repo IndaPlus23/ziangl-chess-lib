@@ -26,4 +26,5 @@ Takes a piece id(must be pawn), a type of chess piece to be promoted to, and a g
 
 ### Function `get_game_state(Vec<Piece>)->i32`
 Takes a game vector, return the current game status: 1=checkmate, 2=check, 3=in progress
+
 Warning:Edge case to be fixed!
