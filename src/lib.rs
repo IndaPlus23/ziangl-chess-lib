@@ -1,3 +1,5 @@
+use std::vec;
+
 /*
  *                        _oo0oo_
  *                       o8888888o
@@ -62,17 +64,26 @@ pub fn new_game() -> Vec<Piece>{
 }
 
 pub fn make_move(id:String, position:[i8;2], mut game:Vec<Piece>) -> Vec<Piece>{
+    let mut enemy:usize=33;
     
     for i in 0..game.len() {                            //if a piece got captured
         if game[i].location==position{
-            game.remove(i);
+            enemy=i;
             break;
         }
     }
 
     for i in 0..game.len() {                            //moves the piece
         if game[i].id==id{
-            game[i].location=position;
+            let legal_moves=get_moves(id, game.clone());
+            for j in legal_moves{
+                if position==j{
+                    game[i].location=position;
+                    if enemy<game.len(){
+                        game.remove(enemy);
+                    }
+                }
+            }
             break;
         }
     }
@@ -573,6 +584,87 @@ pub fn get_moves(id:String,game:Vec<Piece>) -> Vec<[i8;2]>{
 
 }
 
+pub fn promotion(id:String, _type:i8, mut game:Vec<Piece>)->Vec<Piece>{
+    for i in 0..game.len() {
+        if game[i]._type==1&&game[i].id==id{
+            game[i]._type=_type;
+            break;
+        }
+    }
+    return game;
+}
+
+pub fn get_game_state(game:Vec<Piece>)->i32{
+
+    //all available moves by side
+    let mut w_moves:Vec<[i8;2]>=vec![];             
+    let mut b_moves:Vec<[i8;2]>=vec![];
+
+    //kings to determine check/checkmate
+    let mut w_king:Piece=Piece { id: "temp".to_string(), _type: 0, location: [-1,-1], side: true};
+    let mut b_king:Piece=Piece { id: "temp".to_string(), _type: 0, location: [-1,-1], side: true};
+    for i in game.clone() {
+        if i.side{
+            b_moves.append(&mut get_moves(i.id.clone(), game.clone()))
+        }
+        else {
+            w_moves.append(&mut get_moves(i.id.clone(), game.clone()))
+        }
+        if i._type==6{
+            if i.side{
+                b_king=i
+            }
+            else {
+                w_king=i
+            }
+        }
+    }
+
+    b_moves.sort();
+    w_moves.sort();
+
+    b_moves.dedup();
+    w_moves.dedup();
+
+    let mut unavailable_steps=0;
+
+    for i in get_moves(w_king.id.clone(), game.clone()){
+        for j in b_moves.clone(){
+            if i==j{
+                unavailable_steps+=1
+            }
+        }
+    }
+    for i in b_moves{
+        if i==w_king.location{
+            unavailable_steps+=1;
+            if unavailable_steps==get_moves(w_king.id.clone(), game.clone()).len()+1{
+                return 1;
+            }
+            return 2;
+        }
+    }
+    unavailable_steps=0;
+    for i in get_moves(b_king.id.clone(), game.clone()){
+        for j in w_moves.clone(){
+            if i==j{
+                println!("{:?}",j);
+                unavailable_steps+=1
+            }
+        }
+    }
+    for i in w_moves{
+        if i==b_king.location{
+            unavailable_steps+=1;
+            if unavailable_steps==get_moves(b_king.id.clone(), game.clone()).len()+1{
+                return 1;
+            }
+            return 2;
+        }
+    }
+    return 3;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -581,6 +673,7 @@ mod tests {
     fn new_game_test() {
         let result = new_game();
         assert_eq!(result[0].id, "w_pawn_0".to_string());
+        println!("{:?}",result[0].location);
         assert_eq!(result[8]._type, 2);
         assert_eq!(result[6].location[0], 6);
         assert_eq!(result[20].id, "b_pawn_4".to_string());
@@ -591,8 +684,12 @@ mod tests {
     #[test]
     fn make_move_test(){
         let mut game = new_game();
-        game = make_move("w_pawn_0".to_string(), [0,6], game);
-        assert_eq!(game[0].location,[0,6]);
+        assert_eq!(game[0].location,[0,1]);
+        game = make_move("w_pawn_0".to_string(), [0,3], game);
+        assert_eq!(game.len() as i32, 32);
+        assert_eq!(game[0].location,[0,3]);
+        game = make_move("b_pawn_1".to_string(), [1,4], game);
+        game = make_move("b_pawn_1".to_string(), [0,3], game);
         assert_eq!(game.len() as i32, 31)
     }
 
@@ -610,5 +707,21 @@ mod tests {
         println!("{:?}",possible_moves);
         possible_moves=get_moves("b_pawn_1".to_string(), game.clone());
         println!("{:?}",possible_moves);
+        possible_moves=get_moves("w_pawn_2".to_string(), game.clone());
+        println!("{:?}",possible_moves);
+        possible_moves=get_moves("b_king".to_string(), game.clone());
+        println!("{:?}",possible_moves);
+    }
+
+    #[test]
+    fn promotion_test(){
+        let mut game=new_game();
+        game=promotion("w_pawn_0".to_string(), 5, game);
+        println!("{:?}",game[0]._type);
+    }
+    #[test]
+    fn get_game_state_test(){
+        let x= get_game_state(vec![Piece{id:"w_king".to_string(), _type:6, location:[4,0], side:false},Piece{id:"b_king".to_string(), _type:6, location:[4,7], side:true},Piece{id:"w_queen_1".to_string(), _type:5, location:[3,5], side:false},Piece{id:"w_queen_2".to_string(), _type:5, location:[4,5], side:false}]);
+        println!("{}",x)
     }
 }
