@@ -5,13 +5,13 @@ Includes a unique id for all pieces as `String`.
 
 All id's listed: from left to right, top to bottom
 
-b_rook_1, b_knight_1, b_bishop_1, b_queen, b_king, b_bishop_2, b_knight_2, b_rook_2
+`b_rook_1, b_knight_1, b_bishop_1, b_queen, b_king, b_bishop_2, b_knight_2, b_rook_2
 
 b_pawn_<0-7>
 
 w_pawn_<0-7>
 
-w_rook_1, w_knight_1, w_bishop_1, w_queen, w_king, w_bishop_2, w_knight_2, w_rook_2
+w_rook_1, w_knight_1, w_bishop_1, w_queen, w_king, w_bishop_2, w_knight_2, w_rook_2`
 
 Includes the type (pawn, rook, knight, bishop, queen, king) as `i8`.
 
