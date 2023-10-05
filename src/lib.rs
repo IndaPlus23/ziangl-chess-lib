@@ -25,10 +25,10 @@ use std::vec;
 #[derive(Clone)]
 #[readonly::make]
 pub struct Piece{
-    id:String,          //unique id
-    _type:i8,           //Piece type: 1=pawn, 2=rook, 3=knight, 4=bishop, 5=queen, 6=king
-    location: [i8;2],
-    side:bool,          //white or black, true=black, false=white
+    pub id:String,          //unique id
+    pub _type:i8,           //Piece type: 1=pawn, 2=rook, 3=knight, 4=bishop, 5=queen, 6=king
+    pub location: [i8;2],
+    pub side:bool,          //white or black, true=black, false=white
 }
 
 pub fn new_game() -> Vec<Piece>{
