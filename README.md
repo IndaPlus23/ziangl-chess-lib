@@ -3,6 +3,16 @@
 ### Struct `Piece`
 Includes a unique id for all pieces as `String`.
 
+All id's listed from left to right, top to bottom:
+
+`b_rook_1, b_knight_1, b_bishop_1, b_queen, b_king, b_bishop_2, b_knight_2, b_rook_2`
+
+`b_pawn_<0-7>`
+
+`w_pawn_<0-7>`
+
+`w_rook_1, w_knight_1, w_bishop_1, w_queen, w_king, w_bishop_2, w_knight_2, w_rook_2`
+
 Includes the type (pawn, rook, knight, bishop, queen, king) as `i8`.
 
 Includes the location as coordinates `[x,y]` in an array.
@@ -26,4 +36,5 @@ Takes a piece id(must be pawn), a type of chess piece to be promoted to, and a g
 
 ### Function `get_game_state(Vec<Piece>)->i32`
 Takes a game vector, return the current game status: 1=checkmate, 2=check, 3=in progress
+
 Warning:Edge case to be fixed!
