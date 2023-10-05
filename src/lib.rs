@@ -23,12 +23,11 @@ use std::vec;
  *                   PLEASE no runtime bugs
  */
 #[derive(Clone)]
-#[readonly::make]
 pub struct Piece{
-    pub id:String,          //unique id
-    pub _type:i8,           //Piece type: 1=pawn, 2=rook, 3=knight, 4=bishop, 5=queen, 6=king
-    pub location: [i8;2],
-    pub side:bool,          //white or black, true=black, false=white
+    id:String,          //unique id
+    _type:i8,           //Piece type: 1=pawn, 2=rook, 3=knight, 4=bishop, 5=queen, 6=king
+    location: [i8;2],
+    side:bool,          //white or black, true=black, false=white
 }
 
 pub fn new_game() -> Vec<Piece>{
@@ -664,6 +663,22 @@ pub fn get_game_state(game:Vec<Piece>)->i32{
         }
     }
     return 3;
+}
+
+pub fn get_location(i:usize,game:Vec<Piece>)->[i8;2]{
+    return game[i].location;
+}
+
+pub fn get_id(i:usize,game:Vec<Piece>)->String{
+    return game[i].id.clone();
+}
+
+pub fn get_side(i:usize,game:Vec<Piece>)->bool{
+    return game[i].side;
+}
+
+pub fn get_type(i:usize,game:Vec<Piece>)->i8{
+    return game[i]._type;
 }
 
 #[cfg(test)]
