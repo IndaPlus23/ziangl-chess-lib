@@ -149,7 +149,7 @@ pub fn get_moves(id:String,game:Vec<Piece>) -> Vec<[i8;2]>{
                         result.push([position[0]-1,position[1]-1]);
                     }
                     else if !game[i].side&&game[i].location==[position[0]+1,position[1]-1] {
-                        result.push([position[0]-1,position[1]+1]);
+                        result.push([position[0]+1,position[1]-1]);
                     }
                 }
             }
