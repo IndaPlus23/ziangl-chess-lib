@@ -23,6 +23,7 @@ use std::vec;
  *                   PLEASE no runtime bugs
  */
 #[derive(Clone)]
+#[readonly::make]
 pub struct Piece{
     id:String,          //unique id
     _type:i8,           //Piece type: 1=pawn, 2=rook, 3=knight, 4=bishop, 5=queen, 6=king
